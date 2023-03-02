@@ -148,6 +148,7 @@ public class MovieCollection
         }
     }
 
+
     private void displayMovieInfo(Movie movie)
     {
         System.out.println();
@@ -164,6 +165,56 @@ public class MovieCollection
 
     private void searchCast()
     {
+        System.out.print("Enter a cast search term: ");
+        String searchTerm = scanner.nextLine();
+
+        // prevent case sensitivity
+        searchTerm = searchTerm.toLowerCase();
+
+        // arraylist to hold search results
+        ArrayList<Movie> results = new ArrayList<Movie>();
+
+
+        for (int i = 0; i < movies.size(); i++)
+        {
+            String cast = movies.get(i).getCast();
+            cast = cast.toLowerCase();
+
+            if (!results.contains(movies.get(i))&& cast.indexOf(searchTerm) != -1)
+            {
+                //add the Movie objest to the results list
+                String delimeter = "|";
+                String s ="";
+                results.add(cast.indexOf(delimeter),movies.get(i));
+
+            }
+        }
+
+        sortResults(results);
+        for (int i = 0; i < results.size(); i++)
+        {
+            String cast = results.get(i).getCast();
+
+            // this will print index 0 as choice 1 in the results list; better for user!
+            int choiceNum = i + 1;
+
+            System.out.println("" + choiceNum + ". " + cast);
+        }
+        System.out.println("Which cast would you like to learn more about?");
+        System.out.print("Enter number: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        Movie selectedMovie = results.get(choice - 1);
+
+        displayMovieInfo(selectedMovie);
+
+        System.out.println("\n ** Press Enter to Return to Main Menu **");
+        scanner.nextLine();
+
+
+
 
     }
 
@@ -178,10 +229,10 @@ public class MovieCollection
         // arraylist to hold search results
         ArrayList<Movie> results = new ArrayList<Movie>();
 
-        // search through ALL movies in collection
+
         for (int i = 0; i < movies.size(); i++)
         {
-            String movieTitle = movies.get(i).getTitle();
+            String movieTitle = movies.get(i).getKeywords();
             movieTitle = movieTitle.toLowerCase();
 
             if (movieTitle.indexOf(searchTerm) != -1)
@@ -222,11 +273,62 @@ public class MovieCollection
 
     private void listGenres()
     {
+        ArrayList<Movie> results = new ArrayList<Movie>();
+          int d = movies.indexOf("|");
+        for (int i = 0; i < movies.size()-1; i++) {
+            String genre = movies.get(i).getGenres();
+            genre = genre.toLowerCase();
+
+
+            //add the Movie objest to the results list
+            if (movies.get(i) != movies.get(i+1)) {
+                results.add(movies.get(i));
+
+            }
+        }
+        sortResults(results);
+
+        // now, display them all to the user
+        for (int i = 0; i < results.size(); i++)
+        {
+            String keyword = results.get(i).getGenres();
+
+            // this will print index 0 as choice 1 in the results list; better for user!
+            int choiceNum = i + 1;
+
+            System.out.println("" + choiceNum + ". " + keyword);
+        }
+
+        System.out.println("Which keyword would you like to learn more about?");
+        System.out.print("Enter number: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        Movie selectedMovie = results.get(choice - 1);
+
+        displayMovieInfo(selectedMovie);
+
+        System.out.println("\n ** Press Enter to Return to Main Menu **");
+        scanner.nextLine();
+
 
     }
 
     private void listHighestRated()
     {
+          ArrayList<Double> rate = new ArrayList<Double>();
+
+           for(int i = 0; i< movies.size();i++){
+               rate.add(movies.get(i).getUserRating());
+           }
+           //sort rate
+         for(int i =51;i<rate.size();i++){
+             rate.remove(i);
+         }
+        for(int i =1; i<rate.size();i++){
+            System.out.println(i+"."+rate.get(i));
+        }
 
     }
 
